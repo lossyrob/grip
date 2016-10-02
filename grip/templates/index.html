@@ -28,6 +28,12 @@
     .discussion-timeline.wide {
       width: 920px;
     }
+    img {
+      display: block;
+      margin-right: auto;
+      margin-left: auto;
+      max-width: 80%;
+    }
   </style>
 {%- endblock -%}
 
@@ -42,6 +48,17 @@
         var image = images[index];
         if (image.getAttribute('data-canonical-src') && image.src !== image.getAttribute('data-canonical-src')) {
           image.src = image.getAttribute('data-canonical-src');
+        }
+
+        // Set image classes
+        console.log(image.alt);
+        if(image.alt.includes("SIZE::")) {
+          console.log("YES");
+          var sl = image.alt;
+          var sz = sl.substring(sl.length - 2, sl.length);
+          image.style = "max-width: " + sz + "%;";
+        } else {
+          image.style = "max-width: 80%;";
         }
       }
     }
@@ -108,13 +125,7 @@
         <div class="container new-discussion-timeline experiment-repo-nav">
           <div class="repository-content">
             <div id="readme" class="readme boxed-group clearfix announce instapaper_body md">
-              {% if not user_content and title or filename %}
-                <h3>
-                  <span class="octicon octicon-book"></span>
-                  {% if title %}{{ title }}{% else %}{{ filename }}{% endif %}
-                </h3>
-              {% endif %}
-              <article class="markdown-body entry-content" itemprop="text" id="grip-content">
+              <article class="markdown-body entry-content" itemprop="text" id="grip-content" style="border: none;">
                 {{ content|safe }}
               </article>
             </div>
